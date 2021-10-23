@@ -1,0 +1,21 @@
+Modules 
+    - Name - char
+    - Description
+    - created_at - datetimeStamp
+    - Public (Boolean) 
+    - Catagory
+
+SubModule 
+    - Index - int
+    - Name
+    - Des...
+    - created_at
+
+Resources 
+    - Name
+    - created_at
+    - Link
+
+
+Endpoints - :
+    
