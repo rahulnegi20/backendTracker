@@ -1,0 +1,11 @@
+
+.w-100 {
+    object-fit: cover;
+    max-width: 100vmax;
+    min-height: 93vh;
+    max-height: 93vh;
+}
+
+.banner{
+    width: inherit;
+}
