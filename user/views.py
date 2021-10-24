@@ -2,8 +2,11 @@ from rest_framework import generics, authentication, permissions
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 from django.http import JsonResponse
+from .models import Module,Submodule,Resource
+from rest_framework.views import APIView
 
-from user.serializers import UserSerializer, AuthTokenSerializer
+
+from user.serializers import UserSerializer, AuthTokenSerializer,ModuleSerializer
 
 class CreateUserView(generics.CreateAPIView):
     """Create a new user in the system"""
@@ -25,17 +28,30 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+class IndexViews(APIView):
+    def get(self,request):
+        recent_posts=Module.objects.all().order_by('-created_at')
+        serializer=ModuleSerializer(recent_posts)
+        return JsonResponse({
+        'recentpost_list':serializer.data
+        })
 
-def new_post(request):
-    if request.method == 'POST':
-        try:
-            title = request.POST.get('title')
-            description=request.POST.get('description')
-            #user = user.objects.get(id=request.session.get('user_id'))
-            new_post = Post(title=title,description=description)
+class NewModuleViews(APIView):
+    res=""
+    def post(self,request):
+        serializer_class=ModuleSerializer
+        data=request.data
+        
+        title = data["title"]
+        print(title)
+        description=data['description']
+        serializer=ModuleSerializer(data=data)
+        #user = user.objects.get(id=request.session.get('user_id'))
+        if serializer.is_valid():
+            new_post = Module.objects.create(title=title,description=description)
             new_post.save()
             res="success"
-        except ValueError:
+        else:
             res="error"
-            
-    return JsonResponse({"result":res})
+        return JsonResponse({"status":res})
+

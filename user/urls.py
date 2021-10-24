@@ -8,5 +8,7 @@ urlpatterns = [
     path('create/', views.CreateUserView.as_view(), name='create'),
     path('token/', views.CreateTokenView.as_view(), name='token'),
     path('me/', views.ManageUserView.as_view(), name='me'),
-    #path('post/',new_post.as_views,name='post')
+    path('createmodule/',views.NewModuleViews.as_view(),name='module'),
+    path('getrecentlist/',views.IndexViews.as_view(),name='latest_view')
+
 ]

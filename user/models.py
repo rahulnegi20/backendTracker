@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                         PermissionsMixin
 from django.conf import settings
+#from core.utils import auto_save_current_user
 
 class UserManager(BaseUserManager):
 
@@ -44,30 +45,28 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
 class Module(models.Model):
-    title=models.CharField(max_length=255,unique=True)
+    #created_by=models.ForeignKey(User,on_delete=models.CASCADE,default="")
+    title=models.CharField(max_length=255,blank=False)
     created_at=models.DateTimeField(auto_now_add=True)
     description=models.CharField(max_length=140)
-    def save(self,*args,**kwargs):
-        auto_save_current_user(self)
-        super().save(*args,**kwargs)
+    #public=models.BooleanField(default=False)
+    class Meta:
+        ordering=['-created_at']
 class Submodule(models.Model):
     title=models.CharField(max_length=140,default="")
     module=models.ForeignKey(Module,on_delete=models.CASCADE,default="")
-    #added_on=models.DateTimeField(auto_now_add=True)
+    created_at=models.DateTimeField(auto_now_add=True)
     description=models.CharField(max_length=140,default="")
 
 
-    def save(self,*args,**kwargs):
-        auto_save_aurrent_user(self)
-        super().save(*args,**kwargs)
+    
 class Resource(models.Model):
     submodule=models.ForeignKey(Submodule,on_delete=models.CASCADE,default="")
     title=models.CharField(max_length=140,default="")
+    created_at=models.DateTimeField(auto_now_add=True)
     url=models.URLField(max_length=500,default="")
     
-    def save(self,*args,**kwargs):
-        auto_save_current_user(self)
-        super().save(*args,**kwargs)
+    
 
 #class Category(models.Model):
     #name=models.CharField(max_length=63)
