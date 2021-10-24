@@ -47,7 +47,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Module(models.Model):
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE,  related_name='parent_user')
     title=models.CharField(max_length=255,unique=True)
     created_at=models.DateTimeField(auto_now_add=True)
     description=models.CharField(max_length=140)
@@ -55,13 +55,13 @@ class Module(models.Model):
 
 class Submodule(models.Model):
     title=models.CharField(max_length=140,default="")
-    module=models.ForeignKey(Module,on_delete=models.CASCADE)
+    module=models.ForeignKey(Module,on_delete=models.CASCADE,  related_name='parent_module')
     created_at=models.DateTimeField(auto_now_add=True)
     description=models.CharField(max_length=140,default="")
 
 
 class Resource(models.Model):
-    submodule=models.ForeignKey(Submodule,on_delete=models.CASCADE,default="")
+    submodule=models.ForeignKey(Submodule,on_delete=models.CASCADE, related_name='parent_submodule')
     title=models.CharField(max_length=140,default="")
     url=models.URLField(max_length=500,default="")
     created_at=models.DateTimeField(auto_now_add=True)

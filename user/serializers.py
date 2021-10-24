@@ -56,5 +56,14 @@ class AuthTokenSerializer(serializers.Serializer):
 class ModuleCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Module
+        fields = ('id','title', 'description',)
+        read_only_fields = ('id',)
+        depth = 2
+
+
+class SubModuleCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Module
         fields = ('id','title', 'description')
         read_only_fields = ('id',)
+        depth = 2

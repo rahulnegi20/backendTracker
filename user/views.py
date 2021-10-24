@@ -6,7 +6,7 @@ from rest_framework.settings import api_settings
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from user.serializers import UserSerializer, AuthTokenSerializer, ModuleCreateSerializer
+from user.serializers import UserSerializer, AuthTokenSerializer, ModuleCreateSerializer, SubModuleCreateSerializer
 from . import models
 
 
@@ -76,17 +76,32 @@ class ModuleListView(APIView):
 class SubModuleCreateView(APIView):
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
-    # serializer_class = SubModuleCreateSerializer
+    serializer_class = SubModuleCreateSerializer
+    lookup_url_kwarg = 'apk'
     http_method_names = ['post']
 
-    def post(self, request, *args, **kwargs):
-        user = self.request.user
+    def post(self, request, apk, *args, **kwargs):
+        module = models.Module.objects.get(pk=apk)
+        print('THIS IS THE MOUDLE',module)
         title = request.data['title']
         description = request.data['description']
 
-        instance = models.Module.objects.create(created_by=user, title=title, description=description)
+        instance = models.Submodule.objects.create(module=module, title=title, description=description)
         if instance is not None:
             instance.save()
             return Response(status.HTTP_200_OK)
 
         return Response(status.HTTP_400_BAD_REQUEST) 
+
+class SubModuleListView(APIView):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    lookup_url_kwarg = 'apk'
+    lookup_field = 'apk'
+
+    def get(self,request, apk, format=None):
+        print('THIS IS APK',apk)
+        queryset = models.Submodule.objects.filter(module_id=apk)
+        print('WUEAKSASD MSAKD  SD K KSA', queryset)
+        serializer = ModuleCreateSerializer(queryset, many=True)
+        return Response(serializer.data)
