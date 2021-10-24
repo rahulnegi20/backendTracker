@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
                                         PermissionsMixin
 from django.conf import settings
+from django.http import request
 
 class UserManager(BaseUserManager):
 
@@ -43,3 +44,25 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class Module(models.Model):
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    title=models.CharField(max_length=255,unique=True)
+    created_at=models.DateTimeField(auto_now_add=True)
+    description=models.CharField(max_length=140)
+
+
+class Submodule(models.Model):
+    title=models.CharField(max_length=140,default="")
+    module=models.ForeignKey(Module,on_delete=models.CASCADE,default="")
+    created_at=models.DateTimeField(auto_now_add=True)
+    description=models.CharField(max_length=140,default="")
+
+
+class Resource(models.Model):
+    submodule=models.ForeignKey(Submodule,on_delete=models.CASCADE,default="")
+    title=models.CharField(max_length=140,default="")
+    url=models.URLField(max_length=500,default="")
+    created_at=models.DateTimeField(auto_now_add=True)
+

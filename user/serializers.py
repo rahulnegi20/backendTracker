@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model, authenticate
+from django.db.models import fields
 from django.utils.translation import ugettext_lazy as _ 
 from rest_framework import serializers
+from . import models
 
 class UserSerializer(serializers.ModelSerializer):
     """Serializer for the users object"""
@@ -50,3 +52,9 @@ class AuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user 
         return attrs   
+
+class ModuleCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Module
+        fields = ('id','title', 'description')
+        read_only_fields = ('id',)
