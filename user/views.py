@@ -25,7 +25,7 @@ class CreateTokenView(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'token': token.key,
-            'user_id': user.pk,
+            'user_name': user.name,
             'email': user.email
         })
 
