@@ -51,18 +51,19 @@ class Module(models.Model):
         auto_save_current_user(self)
         super().save(*args,**kwargs)
 class Submodule(models.Model):
-    title=models.CharField(max_length=140)
-    module=models.ManyToManyField(Module)
+    title=models.CharField(max_length=140,default="")
+    module=models.ForeignKey(Module,on_delete=models.CASCADE,default="")
     #added_on=models.DateTimeField(auto_now_add=True)
-    description=models.CharField(max_length=140)
+    description=models.CharField(max_length=140,default="")
 
 
     def save(self,*args,**kwargs):
         auto_save_aurrent_user(self)
         super().save(*args,**kwargs)
 class Resource(models.Model):
-    title=models.ManyToManyField(Submodule)
-    url=models.URLField(max_length=500)
+    submodule=models.ForeignKey(Submodule,on_delete=models.CASCADE,default="")
+    title=models.CharField(max_length=140,default="")
+    url=models.URLField(max_length=500,default="")
     
     def save(self,*args,**kwargs):
         auto_save_current_user(self)
