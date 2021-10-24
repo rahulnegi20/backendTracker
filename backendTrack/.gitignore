@@ -1,7 +1,3 @@
 db.sqlite3
 staticfile
 **/migrations/**
-!**/migrations
-!**/migrations/__init__.py
-
-**/**/migrations
