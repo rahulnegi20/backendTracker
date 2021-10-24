@@ -52,3 +52,9 @@ class AuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs   
+
+class ModuleCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Module
+        fields = ('id','title', 'description')
+        read_only_fields = ('id',)
