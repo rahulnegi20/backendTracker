@@ -1,12 +1,8 @@
 from django.db.models.query import QuerySet
 from rest_framework import generics, status, authentication, permissions
 from rest_framework.authtoken.views import ObtainAuthToken
-<<<<<<< HEAD
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-=======
-from rest_framework.schemas import inspectors
->>>>>>> after-dep
 from rest_framework.settings import api_settings
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -25,11 +21,6 @@ class CreateTokenView(ObtainAuthToken):
 
     serializer_class = AuthTokenSerializer
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
-<<<<<<< HEAD
-=======
-
-    
->>>>>>> after-dep
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})

@@ -86,11 +86,7 @@ WSGI_APPLICATION = 'backendTrack.wsgi.application'
 DATABASES = {
     'default': {
 
-<<<<<<< HEAD
         'ENGINE':  os.getenv("ENGINE_NAME"),
-=======
-        'ENGINE': os.getenv("ENGINE_NAME"),
->>>>>>> after-dep
 
         'NAME': os.getenv("db_name"),
 

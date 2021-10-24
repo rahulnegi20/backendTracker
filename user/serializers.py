@@ -50,15 +50,5 @@ class AuthTokenSerializer(serializers.Serializer):
             msg = _('Unable to authenticate with provided credentials')
             raise serializers.ValidationError(msg, code='authentication')
 
-<<<<<<< HEAD
+        attrs['user'] = user
         return attrs   
-=======
-        attrs['user'] = user 
-        return attrs   
-
-class ModuleCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Module
-        fields = ('id','title', 'description')
-        read_only_fields = ('id',)
->>>>>>> after-dep
