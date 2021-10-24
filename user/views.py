@@ -71,20 +71,21 @@ class ModuleListView(APIView):
         serializer = ModuleCreateSerializer(queryset, many=True)
         return Response(serializer.data)
 
-# class SubModuleCreateView(APIView):
-#     authentication_classes = (authentication.TokenAuthentication,)
-#     permission_classes = (permissions.IsAuthenticated,)
-#     serializer_class = SubModuleCreateSerializer
-#     http_method_names = ['post']
 
-#     def post(self, request, *args, **kwargs):
-#         user = self.request.user
-#         title = request.data['title']
-#         description = request.data['description']
+class SubModuleCreateView(APIView):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    # serializer_class = SubModuleCreateSerializer
+    http_method_names = ['post']
 
-#         instance = models.Module.objects.create(created_by=user, title=title, description=description)
-#         if instance is not None:
-#             instance.save()
-#             return Response(status.HTTP_200_OK)
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        title = request.data['title']
+        description = request.data['description']
 
-#         return Response(status.HTTP_400_BAD_REQUEST) 
+        instance = models.Module.objects.create(created_by=user, title=title, description=description)
+        if instance is not None:
+            instance.save()
+            return Response(status.HTTP_200_OK)
+
+        return Response(status.HTTP_400_BAD_REQUEST) 
