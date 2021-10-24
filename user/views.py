@@ -1,6 +1,7 @@
 from rest_framework import generics, authentication, permissions
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
+from django.http import JsonResponse
 
 from user.serializers import UserSerializer, AuthTokenSerializer
 
@@ -24,3 +25,17 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+def new_post(request):
+    if request.method == 'POST':
+        try:
+            title = request.POST.get('title')
+            description=request.POST.get('description')
+            #user = user.objects.get(id=request.session.get('user_id'))
+            new_post = Post(title=title,description=description)
+            new_post.save()
+            res="success"
+        except ValueError:
+            res="error"
+            
+    return JsonResponse({"result":res})

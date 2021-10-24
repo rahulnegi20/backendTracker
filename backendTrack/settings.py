@@ -83,11 +83,11 @@ WSGI_APPLICATION = 'backendTrack.wsgi.application'
 DATABASES = {
     'default': {
 
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': os.getenv("ENGINE_NAME"),
 
         'NAME': os.getenv("db_name"),
 
-        'USER': 'postgres',
+        'USER': os.getenv("db_user"),
 
         'PASSWORD':os.getenv("db_pass"),
 
