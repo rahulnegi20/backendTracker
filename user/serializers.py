@@ -63,7 +63,14 @@ class ModuleCreateSerializer(serializers.ModelSerializer):
 
 class SubModuleCreateSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Module
+        model = models.Submodule
         fields = ('id','title', 'description')
         read_only_fields = ('id',)
         depth = 2
+
+
+class ResourceCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model =models.Resource
+        fields=('id', 'title', 'url')
+        

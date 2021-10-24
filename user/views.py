@@ -6,7 +6,8 @@ from rest_framework.settings import api_settings
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from user.serializers import UserSerializer, AuthTokenSerializer, ModuleCreateSerializer, SubModuleCreateSerializer
+from user.serializers import UserSerializer, AuthTokenSerializer, ModuleCreateSerializer, SubModuleCreateSerializer \
+                            , ResourceCreateSerializer
 from . import models
 
 
@@ -104,4 +105,38 @@ class SubModuleListView(APIView):
         queryset = models.Submodule.objects.filter(module_id=apk)
         print('WUEAKSASD MSAKD  SD K KSA', queryset)
         serializer = ModuleCreateSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class ResourceCreateView(APIView):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class =  ResourceCreateSerializer
+    lookup_url_kwarg = 'bpk'
+    lookup_field = 'bpk'
+    http_method_names = ['post']
+
+    def post(self, request, bpk, *args, **kwargs):
+        submodule = models.Submodule.objects.get(pk=bpk)
+        print('THIS IS THE res',submodule)
+        title = request.data['title']
+        url = request.data['url']
+
+        instance = models.Resource.objects.create(submodule=submodule, title=title, url=url)
+        if instance is not None:
+            instance.save()
+            return Response(status.HTTP_200_OK)
+
+
+class ResourceListView(APIView):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    lookup_url_kwarg = 'bpk'
+    lookup_field = 'bpk'
+
+    def get(self, request, apk, bpk, format=None):
+        print('THIS IS APK', bpk)
+        queryset = models.Resource.objects.filter(submodule_id=bpk)
+        print('WUEAKSASD MSAKD  SD K KSA', queryset)
+        serializer =  ResourceCreateSerializer(queryset, many=True)
         return Response(serializer.data)
