@@ -1,10 +1,19 @@
-from rest_framework import generics, authentication, permissions
+from django.db.models.query import QuerySet
+from rest_framework import generics, status, authentication, permissions
 from rest_framework.authtoken.views import ObtainAuthToken
+<<<<<<< HEAD
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+=======
+from rest_framework.schemas import inspectors
+>>>>>>> after-dep
 from rest_framework.settings import api_settings
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from user.serializers import UserSerializer, AuthTokenSerializer, ModuleCreateSerializer
+from . import models
 
-from user.serializers import UserSerializer, AuthTokenSerializer
 
 class CreateUserView(generics.CreateAPIView):
     """Create a new user in the system"""
@@ -16,6 +25,11 @@ class CreateTokenView(ObtainAuthToken):
 
     serializer_class = AuthTokenSerializer
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+<<<<<<< HEAD
+=======
+
+    
+>>>>>>> after-dep
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
@@ -36,3 +50,50 @@ class ManageUserView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         return self.request.user
+
+class ModuleCreateView(APIView):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ModuleCreateSerializer
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        user = self.request.user
+        print('Hello i am user', user)
+        title = request.data['title']
+        description = request.data['description']
+
+        instance = models.Module.objects.create(created_by=user, title=title, description=description)
+        if instance is not None:
+            instance.save()
+            return Response(status.HTTP_200_OK)
+
+        return Response(status.HTTP_400_BAD_REQUEST) 
+
+class ModuleListView(APIView):
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+
+    def get(self, request, format=None):
+        queryset = models.Module.objects.all()
+        serializer = ModuleCreateSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+# class SubModuleCreateView(APIView):
+#     authentication_classes = (authentication.TokenAuthentication,)
+#     permission_classes = (permissions.IsAuthenticated,)
+#     serializer_class = SubModuleCreateSerializer
+#     http_method_names = ['post']
+
+#     def post(self, request, *args, **kwargs):
+#         user = self.request.user
+#         title = request.data['title']
+#         description = request.data['description']
+
+#         instance = models.Module.objects.create(created_by=user, title=title, description=description)
+#         if instance is not None:
+#             instance.save()
+#             return Response(status.HTTP_200_OK)
+
+#         return Response(status.HTTP_400_BAD_REQUEST) 
