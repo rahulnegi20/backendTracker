@@ -68,7 +68,7 @@ class ModuleListView(APIView):
 
 
     def get(self, request, format=None):
-        queryset = models.Module.objects.all()
+        queryset = models.Module.objects.filter(created_by=request.user)
         serializer = ModuleCreateSerializer(queryset, many=True)
         return Response(serializer.data)
 
