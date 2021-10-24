@@ -12,4 +12,6 @@ urlpatterns = [
     path('list-module/', views.ModuleListView.as_view(), name="module-list"),
     path('<int:apk>/create-submodule/', views.SubModuleCreateView.as_view(), name="create-module"),
     path('<int:apk>/list-submodule/', views.SubModuleListView.as_view(), name="submodule-list"),
+    path('<int:apk>/<int:bpk>/create-res/', views.ResourceCreateView.as_view(), name="create-resource"),
+    path('<int:apk>/<int:bpk>/list-res/', views.ResourceListView.as_view(), name="list-resource"),
 ]
