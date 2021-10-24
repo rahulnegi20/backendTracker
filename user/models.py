@@ -55,7 +55,7 @@ class Module(models.Model):
 
 class Submodule(models.Model):
     title=models.CharField(max_length=140,default="")
-    module=models.ForeignKey(Module,on_delete=models.CASCADE,default="")
+    module=models.ForeignKey(Module,on_delete=models.CASCADE)
     created_at=models.DateTimeField(auto_now_add=True)
     description=models.CharField(max_length=140,default="")
 
